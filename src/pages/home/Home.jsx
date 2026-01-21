@@ -142,7 +142,7 @@ const Home = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          <SectionHeading para={"Our Products"} title="Explore Our Products" />
+          <SectionHeading style={{marginBottom: "50px"}} para={"Our Products"} title="Explore Our Products" />
 
           <motion.div className="flex flex-wrap gap-10 justify-center mt-0">
             {[...Array(8)].map((_, i) => (
