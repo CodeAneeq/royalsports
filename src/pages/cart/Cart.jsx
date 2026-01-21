@@ -47,6 +47,8 @@ import React from "react";
 import UserLayout from "../../components/layout/UserLayout";
 import CartItem from "../../components/cards/CartCard";
 import CheckoutSummary from "../../components/cards/CheckoutSummaryCard";
+import FootballCateg2 from "../../assets/FootballCateg2.png"
+
 
 const Cart = () => {
   return (
@@ -64,14 +66,14 @@ const Cart = () => {
           </h1>
 
           <CartItem
-            image="/images/football.jpg"
+            image={FootballCateg2}
             title="Elite Match Soccer Ball"
             price="45.00"
             meta="Size: 5"
           />
 
           <CartItem
-            image="/images/bat.jpg"
+            image={FootballCateg2}
             title="Pro-Series Willow Cricket Bat"
             price="120.00"
             meta="Size: 5"
