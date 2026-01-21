@@ -144,7 +144,7 @@ const Home = () => {
         >
           <SectionHeading para={"Our Products"} title="Explore Our Products" />
 
-          <motion.div className="flex flex-wrap gap-10 justify-center mt-15">
+          <motion.div className="flex flex-wrap gap-10 justify-center mt-0">
             {[...Array(8)].map((_, i) => (
               <motion.div key={i} variants={fadeUp}>
                 <ProductCard
