@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import cricketIMG from "../../assets/cricket.png"
 import CarromCateg2 from "../../assets/carrom.png"
 import FootballCateg2 from "../../assets/FootballCateg2.png"
-import KitsCateg6 from "../../assets/basketball.png"
+import KitsCateg6 from "../../assets/BasketBall.png"
 import TennisCateg4 from "../../assets/TennisCateg4.png"
 import TracksuitsCateg5 from "../../assets/tracksuits.png"
 import { Swiper, SwiperSlide } from "swiper/react";
