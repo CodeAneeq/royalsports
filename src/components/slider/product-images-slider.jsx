@@ -14,7 +14,7 @@ export default function ProductImagesSlider({ images, onSelect }) {
         // 1024: { slidesPerView: 5 },
       }}
     >
-      {images.map((src, index) => (
+      {images?.map((src, index) => (
         <SwiperSlide key={index}>
           <img
             src={src}
@@ -29,7 +29,7 @@ export default function ProductImagesSlider({ images, onSelect }) {
               transition
               object-cover
               w-full
-              h-20
+              max-h-[420px]
             "
           />
         </SwiperSlide>

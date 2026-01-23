@@ -12,75 +12,76 @@ import "swiper/css/navigation";
 import "./slider.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import CategoryCard from "../cards/CategoryCard";
+import axios from 'axios'
+import baseURL from '../../helper/baseURL';
 
 
-const categories = [
-    {
-        title: "Cricket",
-        desc: "Bats, Balls & More",
-        image: cricketIMG
-    },
-    {
-        title: "Tennis",
-        desc: "Rackets & accessories",
-        image: TennisCateg4
-    },
-    {
-        title: "Football",
-        desc: "Premium Football gear",
-        image: FootballCateg2
-    },
-    {
-        title: "Carrom",
-        desc: "Boards & Strikers",
-        image: CarromCateg2
-    },
-    {
-        title: "Basketball",
-        desc: "Premium Basketball gear",
-        image: KitsCateg6
-    },
-    {
-        title: "Track Suits",
-        desc: "Comfortable sportswear",
-        image: TracksuitsCateg5
-    },
-    {
-        title: "Basketball",
-        desc: "Premium Basketball gear",
-        image: KitsCateg6
-    },
-    {
-        title: "Track Suits",
-        desc: "Comfortable sportswear",
-        image: TracksuitsCateg5
-    },
+// const categories = [
+//     {
+//         title: "Cricket",
+//         desc: "Bats, Balls & More",
+//         image: cricketIMG
+//     },
+//     {
+//         title: "Tennis",
+//         desc: "Rackets & accessories",
+//         image: TennisCateg4
+//     },
+//     {
+//         title: "Football",
+//         desc: "Premium Football gear",
+//         image: FootballCateg2
+//     },
+//     {
+//         title: "Carrom",
+//         desc: "Boards & Strikers",
+//         image: CarromCateg2
+//     },
+//     {
+//         title: "Basketball",
+//         desc: "Premium Basketball gear",
+//         image: KitsCateg6
+//     },
+//     {
+//         title: "Track Suits",
+//         desc: "Comfortable sportswear",
+//         image: TracksuitsCateg5
+//     },
+//     {
+//         title: "Basketball",
+//         desc: "Premium Basketball gear",
+//         image: KitsCateg6
+//     },
+//     {
+//         title: "Track Suits",
+//         desc: "Comfortable sportswear",
+//         image: TracksuitsCateg5
+//     },
 
-]
+// ]
 
 export default function CategorySlider() {
     const swiperRef = useRef(null);
-    //    const [category, setCategory] = useState([]);
+       const [category, setCategory] = useState([]);
 
-    //    const getCategories = async () => { 
-    //      try {
-    //        let response = await axios.get( `${baseURL}/category/api/get-category`);
-    //        let data = response.data.data;
+       const getCategories = async () => { 
+         try {
+           let response = await axios.get( `${baseURL}/api/category/get-all-categories`);
+           let data = response.data.data;
+           console.log(data);
+           setCategory(data);
+          } catch (error) {
+            console.log(error);
+          }
+        }
 
-    //        console.log(data);
-    //        setCategory(data);
-    //       } catch (error) {
-    //         console.log(error);
-    //       }
-    //     }
+       useEffect(() => {
+        getCategories()
+       }, [])
 
-    //    useEffect(() => {
-    //     getCategories()
-    //    }, [])
-
-    //    useEffect(() => {
-    //   console.log("Updated category state:", category);
-    // }, [category]);
+       useEffect(() => {
+      console.log("Updated category state:", category);
+    }, [category]);
 
     const goNext = () => {
         if (swiperRef.current && swiperRef.current.swiper) {
@@ -117,9 +118,9 @@ export default function CategorySlider() {
                 }}
                 className="mySwiper"
             >
-                {categories.map((item, key) => (
+                {category.map((item, key) => (
                     <SwiperSlide key={key} className="d-flex justify-center max-[490px]:mx-auto ">
-                        <CategoryCard id={item._id} title={item.title} image={item.image} description={item.desc} />
+                        <CategoryCard id={item._id} title={item.name} image={item.image} description={item.description} />
                     </SwiperSlide>
                 ))}
             </Swiper>

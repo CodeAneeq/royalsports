@@ -1,11 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserLayout from "../../components/layout/UserLayout";
 import FootballCateg2 from "../../assets/FootballCateg2.png";
 import ProductImagesSlider from "../../components/slider/product-images-slider";
 import SectionHeading from "../../components/sectionHeadings/SectionHeading";
 import ProductCard from "../../components/cards/ProductCard";
+import axios from "axios";
+import baseURL from "../../helper/baseURL";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const ProductInfo = () => {
+  const {id} = useParams();
+  
+  const [product, setProduct] = useState(null);
+  const [activeImage, setActiveImage] = useState("");
+  const [products, setProducts] = useState([]);
+
+  const getProduct = async () => {
+    try {
+      const res = await axios.get(`${baseURL}/api/product/get-product/${id}`);
+      const data = res?.data?.data;
+      setProduct(data);
+      console.log(data);
+      if (data?.image?.length > 0) {
+      setActiveImage(data.image[0]);
+    }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+  const getProducts = async () => {
+        try {
+            const res = await axios.get(`${baseURL}/api/product/get-all-products`);
+            const data = res?.data?.data;
+            console.log(data);
+            
+            setProducts(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+  useEffect(() => {
+    getProduct();
+    getProducts()
+  }, [id])
+
   const images = [
     FootballCateg2,
     FootballCateg2,
@@ -13,46 +56,55 @@ const ProductInfo = () => {
     FootballCateg2,
   ];
 
-  const [activeImage, setActiveImage] = useState(images[0]);
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <UserLayout>
+  <UserLayout>
       <div className="max-w-7xl mx-10 px-4 py-10 max-[475px]:mx-5">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
           {/* LEFT: Product Images */}
-          <div>
-            <div className="bg-gray-200 rounded-xl flex items-center justify-center p-6">
-              <img
-                src={activeImage}
-                alt="product"
-                className="max-h-[420px] w-auto object-contain"
-              />
-            </div>
+     <div>
+  {/* Active Image */}
+  <div className="bg-gray-200 rounded-xl h-[460px] flex items-center justify-center p-6 max-md:h-[300px]">
+    {activeImage && (
+      <img
+        src={activeImage}
+        alt="product"
+        className="
+          max-h-full
+          max-w-full
+          object-contain
+          transition-all
+          duration-300
+        "
+      />
+    )}
+  </div>
 
-            <div className="mt-4 mx-10 ">
-              <ProductImagesSlider
-                images={images}
-                onSelect={setActiveImage}
-              />
-            </div>
-          </div>
+  {/* Thumbnails Slider */}
+  <div className="mt-4 px-10">
+    <ProductImagesSlider
+      images={product?.image}
+      onSelect={setActiveImage}
+    />
+  </div>
+</div>
+
 
           {/* RIGHT: Product Info */}
           <div className="flex flex-col justify-center space-y-6">
 
             {/* Title */}
             <h1 className="text-3xl font-extrabold text-gray-900 uppercase">
-              Engineered for Precision:
-              <br />
-              Pro-Elite Series
+             {product?.name}
+
             </h1>
 
             {/* Price */}
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-blue-600">$159.00</span>
-              <span className="text-gray-400 line-through">$189.00</span>
+              <span className="text-3xl font-bold text-blue-600">Rs {product?.discountPrice}</span>
+              <span className="text-gray-400 line-through">Rs {product?.originalPrice}</span>
               <span className="text-sm font-semibold text-red-500">
                 SAVE 15%
               </span>
@@ -60,10 +112,7 @@ const ProductInfo = () => {
 
             {/* Description */}
             <p className="text-gray-600 leading-relaxed">
-              The pinnacle of ball engineering. Our thermal-bonded surface
-              provides a seamless, aerodynamic flight path and minimal water
-              absorption, meeting the highest FIFA standards for competitive
-              play.
+             {product?.description}
             </p>
 
             {/* Quantity + Stock */}
@@ -87,7 +136,7 @@ const ProductInfo = () => {
 
               <div>
                 <p className="text-sm font-semibold text-gray-800">
-                  Only <span className="text-blue-600">12 items</span> left in stock!
+                  Only <span className="text-blue-600">{product?.stockQty} items</span> left in stock!
                 </p>
                 <p className="text-sm text-green-600">
                   Free Express Delivery available
@@ -123,22 +172,22 @@ const ProductInfo = () => {
               <div className="flex items-center gap-2">
                 ↩ 7 days Check Warranty
               </div>
-            </div>
-
+            </div> 
           </div>
 
         </div>
         <div className="mt-30">
             <SectionHeading title="Complete Your Kit" para="Get Now!"/>       
           <div className="flex flex-wrap gap-10 justify-center mt-15">
-            {[...Array(4)].map((_, i) => (
+            {products.slice(0, 4)?.map((item, i) => (
               <div key={i} >
                 <ProductCard
-                  image={FootballCateg2}
-                  title="Elite Match Ball V2"
-                  subtitle="FIFA Quality Pro Certified"
-                  price={120}
-                  badge="NEW ARRIVAL"
+                  image={item?.image[0]}
+                  title={item?.name?.slice(0, 22) + "..."}
+                  subtitle={item?.description?.slice(0, 28) + "..."}
+                  price={item.discountPrice}
+                 badge={item.badge}
+                  id={item._id}
                 />
               </div>
             ))}

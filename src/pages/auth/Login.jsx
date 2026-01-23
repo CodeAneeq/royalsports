@@ -3,11 +3,50 @@ import AuthLayout from "../../components/layout/AuthLayout";
 import TextField from "../../components/inputs/TextFields";
 import PrimaryBtn from "../../components/buttons/PrimaryBtn";
 import { FaEye } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Helpers } from "../../helper/helper";
+import axios from "axios";
+import baseURL from "../../helper/baseURL";
+import { addUser } from "../../redux/features/UserSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [formatError, setFormatError] = useState({
+      emailError: "",
+      passwordError: ""
+  })
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const LoginAPI = async () => {
+      let emailError = "", passwordError = "";
+      if (!Helpers.validateEmail(email)) {
+        emailError = "Please enter a valid email";
+      }
+      if (!Helpers.validatePassword(password)) {
+        passwordError = 'Password must be at least 8 characters';
+      }
+      if (emailError || passwordError) {
+        setFormatError({ emailError: emailError, passwordError: passwordError})
+      } else {
+        try {
+          const payload = { email, password };
+          const res = await axios.post(`${baseURL}/api/auth/login`, payload);
+          console.log(res);
+          dispatch(addUser(res?.data?.data));
+          localStorage.setItem("token", res?.data?.data?.token);
+          alert("User Login Successfully");
+          navigate("/")
+        } catch (error) {
+          console.log(error);
+          setAuthError(error?.response?.data?.message);
+        }
+      }
+  
+    }
 
   return (
     <AuthLayout
@@ -21,6 +60,9 @@ const Login = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
 
+      {formatError.emailError && <p className="text-red-500 mb-3">{formatError.emailError}</p>}
+
+
       <TextField
         label="Password"
         type="password"
@@ -30,18 +72,18 @@ const Login = () => {
         rightElement={<FaEye />}
       />
 
+              {formatError.passwordError && <p className="text-red-500">{formatError.passwordError}</p>}
+      {authError && <p className="text-red-500">{authError}</p>}
+
+
       <div className="flex items-center justify-between text-sm mb-6">
         <label className="flex items-center gap-2">
           <input type="checkbox" />
           Keep me logged in
         </label>
-
-        <span className="text-blue-600 cursor-pointer">
-          Forgot Password?
-        </span>
       </div>
 
-      <PrimaryBtn className="w-full bg-yellow-400 hover:bg-yellow-500">
+      <PrimaryBtn onClick={LoginAPI} className="w-full bg-yellow-400 hover:bg-yellow-500">
         LOGIN →
       </PrimaryBtn>
 

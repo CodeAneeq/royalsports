@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from "framer-motion";
 import { fadeUp, fadeIn, staggerContainer } from "../../components/animations/variants";
 import Banner1 from '../../assets/homepage_banner_1.png';
@@ -13,76 +13,100 @@ import { MdOutlineVerifiedUser } from 'react-icons/md';
 import { RiCustomerService2Fill } from 'react-icons/ri';
 import UserLayout from '../../components/layout/UserLayout';
 import SectionHeading from '../../components/sectionHeadings/SectionHeading';
+import axios from 'axios';
+import baseURL from '../../helper/baseURL';
 
-const products = [
-  {
-    id: 1,
-    image: FootballCateg2,
-    title: "Elite Match Ball V2",
-    subtitle: "FIFA Quality Pro Certified",
-    price: 120,
-    badge: "NEW ARRIVAL",
-  },
-  {
-    id: 2,
-    image: FootballCateg2,
-    title: "Elite Match Ball V2",
-    subtitle: "FIFA Quality Pro Certified",
-    price: 120,
-    badge: "NEW ARRIVAL",
-  },
-  {
-    id: 3,
-    image: FootballCateg2,
-    title: "Elite Match Ball V2",
-    subtitle: "FIFA Quality Pro Certified",
-    price: 120,
-    badge: "NEW ARRIVAL",
-  },
-  {
-    id: 4,
-    image: FootballCateg2,
-    title: "Elite Match Ball V2",
-    subtitle: "FIFA Quality Pro Certified",
-    price: 120,
-    badge: "NEW ARRIVAL",
-  },
-  {
-    id: 5,
-    image: FootballCateg2,
-    title: "Elite Match Ball V2",
-    subtitle: "FIFA Quality Pro Certified",
-    price: 120,
-    badge: "NEW ARRIVAL",
-  },
-  {
-    id: 6,
-    image: FootballCateg2,
-    title: "Elite Match Ball V2",
-    subtitle: "FIFA Quality Pro Certified",
-    price: 120,
-    badge: "NEW ARRIVAL",
-  },
-  {
-    id: 7,
-    image: FootballCateg2,
-    title: "Elite Match Ball V2",
-    subtitle: "FIFA Quality Pro Certified",
-    price: 120,
-    badge: "NEW ARRIVAL",
-  },
-  {
-    id: 8,
-    image: FootballCateg2,
-    title: "Elite Match Ball V2",
-    subtitle: "FIFA Quality Pro Certified",
-    price: 120,
-    badge: "NEW ARRIVAL",
-  },
-];
+// const products = [
+//   {
+//     id: 1,
+//     image: FootballCateg2,
+//     title: "Elite Match Ball V2",
+//     subtitle: "FIFA Quality Pro Certified",
+//     price: 120,
+//     badge: "NEW ARRIVAL",
+//   },
+//   {
+//     id: 2,
+//     image: FootballCateg2,
+//     title: "Elite Match Ball V2",
+//     subtitle: "FIFA Quality Pro Certified",
+//     price: 120,
+//     badge: "NEW ARRIVAL",
+//   },
+//   {
+//     id: 3,
+//     image: FootballCateg2,
+//     title: "Elite Match Ball V2",
+//     subtitle: "FIFA Quality Pro Certified",
+//     price: 120,
+//     badge: "NEW ARRIVAL",
+//   },
+//   {
+//     id: 4,
+//     image: FootballCateg2,
+//     title: "Elite Match Ball V2",
+//     subtitle: "FIFA Quality Pro Certified",
+//     price: 120,
+//     badge: "NEW ARRIVAL",
+//   },
+//   {
+//     id: 5,
+//     image: FootballCateg2,
+//     title: "Elite Match Ball V2",
+//     subtitle: "FIFA Quality Pro Certified",
+//     price: 120,
+//     badge: "NEW ARRIVAL",
+//   },
+//   {
+//     id: 6,
+//     image: FootballCateg2,
+//     title: "Elite Match Ball V2",
+//     subtitle: "FIFA Quality Pro Certified",
+//     price: 120,
+//     badge: "NEW ARRIVAL",
+//   },
+//   {
+//     id: 7,
+//     image: FootballCateg2,
+//     title: "Elite Match Ball V2",
+//     subtitle: "FIFA Quality Pro Certified",
+//     price: 120,
+//     badge: "NEW ARRIVAL",
+//   },
+//   {
+//     id: 8,
+//     image: FootballCateg2,
+//     title: "Elite Match Ball V2",
+//     subtitle: "FIFA Quality Pro Certified",
+//     price: 120,
+//     badge: "NEW ARRIVAL",
+//   },
+// ];
 
 
 const Home = () => {
+
+  const hasAnimated = useRef(false);
+
+  const [products, setProducts] = useState([]);
+
+  const getProducts = async () => {
+        try {
+            const res = await axios.get(`${baseURL}/api/product/get-all-products`);
+            const data = res?.data?.data;
+            console.log(data);
+            
+            setProducts(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    useEffect(() => {
+      getProducts()
+    }, [])
+
   return (
       <UserLayout>
     <div>
@@ -135,24 +159,29 @@ const Home = () => {
         </motion.section>
 
 
-        <motion.section
-          className="mt-35"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          <SectionHeading para={"Our Products"} title="Explore Our Products" />
+            <motion.section
+      className="mt-35"
+      variants={staggerContainer}
+      initial={hasAnimated.current ? "visible" : "hidden"}
+      whileInView="visible"
+      viewport={{ amount: 0.2 }}
+      onViewportEnter={() => {
+        hasAnimated.current = true;
+      }}
+    >
 
-          <motion.div className="flex flex-wrap gap-10 justify-center mt-15">
-            {[...Array(8)].map((_, i) => (
+          <SectionHeading style={{marginBottom: "50px"}} para={"Our Products"} title="Explore Our Products" />
+
+          <motion.div className="flex flex-wrap gap-10 justify-center">
+            {products.slice(0, 8).map((item, i) => (
               <motion.div key={i} variants={fadeUp}>
                 <ProductCard
-                  image={FootballCateg2}
-                  title="Elite Match Ball V2"
-                  subtitle="FIFA Quality Pro Certified"
-                  price={120}
-                  badge="NEW ARRIVAL"
+                  image={item.image[0]}
+                  title={item.name.slice(0, 22) + "..."}
+                  subtitle={item.description.slice(0, 28) + "...."}
+                  price={item.discountPrice}
+                  badge={item.badge}
+                  id={item._id}
                 />
               </motion.div>
             ))}

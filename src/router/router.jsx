@@ -11,6 +11,7 @@ const MyOrdersPage = lazy(() => import('../pages/myOrders/MyOrders'));
 const CartPage = lazy(() => import('../pages/cart/Cart'));
 const ProductInfoPage = lazy(() => import('../pages/productInfo/ProductInfo'));
 const AddressPage = lazy(() => import('../pages/address/AddressPage'));
+const FilterByCategoryPage = lazy(() => import('../pages/filterByCategory/FilterByCategory'));
 // const SearchResultPage = lazy(() => import("../pages/search-result/search-result"));
 
 // const AddProductPage = lazy(() => import("../pages/admin/add-product/add-product"));
@@ -39,16 +40,16 @@ export const publicRoutes = createBrowserRouter([
         element: <LoginPage></LoginPage>
     },
     {
-        path: '/my-orders',
-        element: <MyOrdersPage></MyOrdersPage>
-    },
-    {
         path:`/cart`,
         element: <CartPage></CartPage>
     },
     {
-        path:`/product-info`,
+        path:`/product-info/:id`,
         element: <ProductInfoPage></ProductInfoPage>
+    }, 
+    {
+        path:`/filter-by-category/:id`,
+        element: <FilterByCategoryPage></FilterByCategoryPage>
     }, 
     {
         path:`/address`,
@@ -56,40 +57,56 @@ export const publicRoutes = createBrowserRouter([
     },
 ])
 
-// export const privateRoutes = createBrowserRouter([
-//     {
-//         path: '/my-orders',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><MyOrdersPage></MyOrdersPage></Suspense>
-//     },
-//      {
-//         path: '/',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><HomePage></HomePage></Suspense>,
-//     },
-//     {
-//         path: '/all-products',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><AllProductsPage></AllProductsPage></Suspense>,
-//     },
-//     {
-//         path: '/filter-by-category/:category',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><ByCategoryPage></ByCategoryPage></Suspense>,
-//     },
-//     {
-//         path: '/product-info/:id',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><ProductInfoPage></ProductInfoPage></Suspense>,
-//     },
-//     {
-//         path: '/cart',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><CartPage></CartPage></Suspense>,
-//     },
-//     {
-//         path: '/add-address',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><AddAddress></AddAddress></Suspense>
-//     },
-//     {
-//         path:`search-result`,
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><SearchResultPage></SearchResultPage></Suspense>
-//     }
-// ])
+export const privateRoutes = createBrowserRouter([
+        {
+        path: '/',
+        element: <HomePage></HomePage>,
+    },
+    {
+        path: '/all-products',
+        element: <AllProductsPage></AllProductsPage>,
+    },
+    {
+        path: '/about-us',
+        element: <AboutUsPage></AboutUsPage>,
+    },
+    {
+        path: '/sign-up',
+        element:<SignUpPage></SignUpPage>
+    },
+    {
+        path: '/login',
+        element: <LoginPage></LoginPage>
+    },
+    {
+        path:`/cart`,
+        element: <CartPage></CartPage>
+    },
+    {
+        path:`/product-info/:id`,
+        element: <ProductInfoPage></ProductInfoPage>
+    }, 
+    {
+        path:`/filter-by-category/:id`,
+        element: <FilterByCategoryPage></FilterByCategoryPage>
+    }, 
+    {
+        path:`/address`,
+        element: <AddressPage></AddressPage>
+    },
+    {
+        path: '/my-orders',
+        element: <MyOrdersPage></MyOrdersPage>
+    },
+    {
+        path: '/cart',
+        element: <CartPage></CartPage>
+    },
+    {
+        path: '/add-address',
+        element: <AddressPage></AddressPage>
+    },
+])
 
 // export const adminRoutes = createBrowserRouter([
 //     {

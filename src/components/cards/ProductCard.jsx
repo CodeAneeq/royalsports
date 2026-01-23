@@ -2,21 +2,22 @@ import { CiHeart } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
 import CartBtn from "../buttons/CartBtn";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const ProductCard = ({
-    title = "Elite Match Ball V2",
-    subtitle = "FIFA Quality Pro Certified",
+    title,
+    subtitle,
     price = 120,
     image,
-    badge = "NEW ARRIVAL",
+    badge,
+    id
 }) => {
 
     const navigate = useNavigate();
 
     return (
-        <div className="group relative w-64 mb-10 rounded-3xl bg-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl" onClick={() => navigate("/product-info")}>
+        <div className="group relative w-64 mb-10 rounded-3xl bg-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer" onClick={() => navigate(`/product-info/${id}`)}>
 
-            {/* Image Section */}
             <div className="relative h-56 rounded-t-3xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-700">
                 <img
                     src={image}
@@ -24,7 +25,6 @@ const ProductCard = ({
                     className="w-full h-full object-contain p-6 transition-transform duration-300 group-hover:scale-105"
                 />
 
-                {/* Badge */}
                 {badge && (
                     <span className="absolute top-4 left-4 rounded-lg bg-blue-600 px-3 py-1 text-xs font-semibold text-white">
                         {badge}
@@ -45,7 +45,7 @@ const ProductCard = ({
 
                 <div className="mt-4 flex items-center justify-between">
                     <span className="text-2xl font-bold text-red-500">
-                        ${price.toFixed(2)}
+                        Rs {price.toFixed(2)}
                     </span>
 
                     <CartBtn />

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserLayout from "../../components/layout/UserLayout";
 import SectionHeading from "../../components/sectionHeadings/SectionHeading";
 import OrderCard from "../../components/cards/OrdersCard";
 import FootballCateg2 from "../../assets/FootballCateg2.png"
+import baseURL from "../../helper/baseURL";
+import { useSelector } from "react-redux";
 
 
 const ordersData = [
@@ -33,11 +35,28 @@ const tabs = ["All Orders", "Processing", "Shipped"];
 
 const MyOrders = () => {
   const [activeTab, setActiveTab] = useState("All Orders");
+  const [order, setOrders] = useState(null);
+  const user = useSelector(state => state.user.data);
+
+
+  const getMyOrders = async () => {
+    try {
+      let res = await axios.get(`${baseURL}/api/order//get-my-orders/${user._id}`);
+      let data = res?.data?.data;
+      setOrders(data);
+    } catch (error) {
+      console.log(error);
+    }
+  } 
+
+  useEffect(() => {
+    getMyOrders()
+  }, [])
 
   const filteredOrders =
     activeTab === "All Orders"
-      ? ordersData
-      : ordersData.filter((order) => order.status === activeTab);
+      ? order
+      : order?.filter((order) => order.status === activeTab);
 
   return (
     <UserLayout>
@@ -63,16 +82,16 @@ const MyOrders = () => {
 
         {/* Orders */}
         <div className="mt-6">
-          {filteredOrders.map((order) => (
+          {order?.length > 0 ? order?.map((order) => (
             <OrderCard
-              key={order.id}
-              image={order.image}
-              orderId={order.id}
-              date={order.date}
-              amount={order.amount}
+              key={order._id}
+              image={order.product.image}
+              orderId={order._id}
+              // date={order.date}
+              amount={order.total}
               status={order.status}
             />
-          ))}
+          )) : <p>You dont order any thing from royal Sports</p>}
         </div>
       </div>
     </UserLayout>
