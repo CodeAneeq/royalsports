@@ -70,6 +70,7 @@ const FilterByCategory = () => {
                   subtitle={item.description.slice(0, 28) + "...."}
                   price={item?.discountPrice}
                    badge={item.badge}
+                   product={item}
                    id={item._id}
                 />
               </motion.div>

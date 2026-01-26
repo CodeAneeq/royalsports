@@ -12,11 +12,14 @@ const CartPage = lazy(() => import('../pages/cart/Cart'));
 const ProductInfoPage = lazy(() => import('../pages/productInfo/ProductInfo'));
 const AddressPage = lazy(() => import('../pages/address/AddressPage'));
 const FilterByCategoryPage = lazy(() => import('../pages/filterByCategory/FilterByCategory'));
-// const SearchResultPage = lazy(() => import("../pages/search-result/search-result"));
 
-// const AddProductPage = lazy(() => import("../pages/admin/add-product/add-product"));
-// const ProductListPage = lazy(() => import("../pages/admin/product-list/product-list"));
-// const OrderListPage = lazy(() => import("../pages/admin/order-list/order-list"));
+const DashboardPage = lazy(() => import("../pages/admin/dashboard/Dashboard"));
+const AddProductPage = lazy(() => import("../pages/admin/addProduct/AddProduct"));
+const ProductListPage = lazy(() => import("../pages/admin/products/products"));
+const OrderListPage = lazy(() => import("../pages/admin/orders/Orders"));
+const EditProductPage = lazy(() => import("../pages/admin/editProduct/EditProduct"));
+const AddCategoryPage = lazy(() => import("../pages/admin/addCategory/AddCategory"));
+const CategoriesPage = lazy(() => import("../pages/admin/categories/Categories"));
 
 export const publicRoutes = createBrowserRouter([
     {
@@ -38,10 +41,6 @@ export const publicRoutes = createBrowserRouter([
     {
         path: '/login',
         element: <LoginPage></LoginPage>
-    },
-    {
-        path:`/cart`,
-        element: <CartPage></CartPage>
     },
     {
         path:`/product-info/:id`,
@@ -69,14 +68,6 @@ export const privateRoutes = createBrowserRouter([
     {
         path: '/about-us',
         element: <AboutUsPage></AboutUsPage>,
-    },
-    {
-        path: '/sign-up',
-        element:<SignUpPage></SignUpPage>
-    },
-    {
-        path: '/login',
-        element: <LoginPage></LoginPage>
     },
     {
         path:`/cart`,
@@ -108,17 +99,33 @@ export const privateRoutes = createBrowserRouter([
     },
 ])
 
-// export const adminRoutes = createBrowserRouter([
-//     {
-//         path: '/',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><AddProductPage/></Suspense>
-//     },
-//     {
-//         path: '/seller/product-list',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><ProductListPage/></Suspense>
-//     },
-//     {
-//         path: '/seller/order-list',
-//         element: <Suspense fallback={<Loader fullScreen={true}></Loader>}><OrderListPage/></Suspense>
-//     }
-// ])
+export const adminRoutes = createBrowserRouter([
+    {
+        path: '/',
+        element: <DashboardPage/>
+    },
+    {
+        path: '/admin/add-product',
+        element: <AddProductPage/>
+    },
+    {
+        path: '/admin/edit-product',
+        element: <EditProductPage/>
+    },
+    {
+        path: '/admin/orders',
+        element: <OrderListPage/>
+    },
+    {
+        path: '/admin/categories',
+        element: <CategoriesPage/>
+    },
+    {
+        path: '/admin/products',
+        element: <ProductListPage/>
+    },
+    {
+        path: '/admin/add-category',
+        element: <AddCategoryPage/>
+    },
+])

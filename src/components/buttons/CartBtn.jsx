@@ -3,11 +3,14 @@ import { IoCartOutline } from "react-icons/io5"
 import { Link } from 'react-router-dom';
 
 
-const CartBtn = () => {
+const  CartBtn = ({onClick}) => {
+
+    
+
     return (
-        <Link to="/cart" className='w-10 h-10 bg-[#21c45a] text-white rounded-md text-xl flex justify-center items-center cursor-pointer'>
+        <span className='w-10 h-10 bg-[#21c45a] text-white rounded-md text-xl flex justify-center items-center cursor-pointer' onClick={onClick}>
             <IoCartOutline />
-        </Link>
+        </span>
     )
 }
 

@@ -47,8 +47,8 @@
 import React from "react";
 
 const statusColors = {
-  Shipped: "bg-blue-600",
-  Processing: "bg-orange-500",
+  Shipping: "bg-blue-600",
+  Pending: "bg-orange-500",
   Delivered: "bg-green-600",
 };
 

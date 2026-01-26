@@ -182,6 +182,7 @@ const Home = () => {
                   price={item.discountPrice}
                   badge={item.badge}
                   id={item._id}
+                  product={item}
                 />
               </motion.div>
             ))}

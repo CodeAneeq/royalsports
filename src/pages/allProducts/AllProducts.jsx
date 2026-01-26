@@ -7,10 +7,13 @@ import FootballCateg2 from "../../assets/FootballCateg2.png"
 import SectionHeading from '../../components/sectionHeadings/SectionHeading';
 import baseURL from '../../helper/baseURL';
 import axios from 'axios';
+import useShoppingCart from '../../hooks/useShoppingCart';
+import { useNavigate } from 'react-router-dom';
 
 const AllProducts = () => {
   
        const [products, setProducts] = useState([]);
+       const navigate = useNavigate();
   
       const getProducts = async () => {
           try {
@@ -52,6 +55,7 @@ const AllProducts = () => {
                      title={item.name.slice(0, 22) + "..."}
                   subtitle={item.description.slice(0, 28) + "...."}
                   price={item?.discountPrice}
+                  product={item}
                    badge={item.badge}
                    id={item._id}
                 />

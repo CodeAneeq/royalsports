@@ -1,13 +1,16 @@
 import { RouterProvider } from "react-router-dom"
-import { privateRoutes, publicRoutes } from "./router/router"
+import { adminRoutes, privateRoutes, publicRoutes } from "./router/router"
 import { useSelector } from "react-redux"
 
 function App() {
 
   const isLogin = useSelector(state => state.user.isLogin);
+  const role = useSelector(state => state.user.data?.role);
   let route = publicRoutes;
-  if (isLogin) {
+  if (isLogin && role == "user") {
     route = privateRoutes
+  } else if (isLogin && role == "admin") {
+    route = adminRoutes
   }
 
   return (

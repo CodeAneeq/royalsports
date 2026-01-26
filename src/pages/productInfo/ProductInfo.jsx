@@ -6,14 +6,19 @@ import SectionHeading from "../../components/sectionHeadings/SectionHeading";
 import ProductCard from "../../components/cards/ProductCard";
 import axios from "axios";
 import baseURL from "../../helper/baseURL";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import useShoppingCart from "../../hooks/useShoppingCart";
+import { useSelector } from "react-redux";
 
 const ProductInfo = () => {
   const {id} = useParams();
-  
+  const isLogin = useSelector(state => state.user.isLogin);
+  const navigate = useNavigate();
+  const {addProductInCart} = useShoppingCart();
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState("");
   const [products, setProducts] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
   const getProduct = async () => {
     try {
@@ -44,6 +49,15 @@ const ProductInfo = () => {
         }
     }
 
+    const buyNow = () => {
+      if (isLogin) {        
+        addProductInCart(product, quantity);
+        navigate("/cart")
+      } else {
+        navigate("/sign-up")
+      }
+    }
+
   useEffect(() => {
     getProduct();
     getProducts()
@@ -56,7 +70,6 @@ const ProductInfo = () => {
     FootballCateg2,
   ];
 
-  const [quantity, setQuantity] = useState(1);
 
   return (
   <UserLayout>
@@ -116,7 +129,7 @@ const ProductInfo = () => {
             </p>
 
             {/* Quantity + Stock */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 max-[400px]:flex-col">
               {/* Quantity Selector */}
               <div className="flex items-center border rounded-lg overflow-hidden">
                 <button
@@ -148,14 +161,14 @@ const ProductInfo = () => {
             <div className="flex gap-4 pt-4">
               {/* Primary Button */}
               <button
-                className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded-lg transition"
+                className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded-lg transition cursor-pointer" onClick={() => addProductInCart(product, quantity)}
               >
                 Add to Cart
               </button>
 
               {/* Primary Button */}
               <button
-                className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition"
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition cursor-pointer" onClick={buyNow}
               >
                 Buy Now
               </button>
@@ -186,6 +199,7 @@ const ProductInfo = () => {
                   title={item?.name?.slice(0, 22) + "..."}
                   subtitle={item?.description?.slice(0, 28) + "..."}
                   price={item.discountPrice}
+                  product={item}
                  badge={item.badge}
                   id={item._id}
                 />

@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import logo from "../../assets/logo2.png"
 import NavBtn from '../buttons/NavBtn'
 import { IoCartOutline, IoMenu, IoClose } from "react-icons/io5"
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import CartBtn from '../buttons/CartBtn'
 import { useSelector } from 'react-redux'
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const isLogin = useSelector(state => state.user.isLogin);
+  const navigate = useNavigate();
 
   const linkClass = ({ isActive }) =>
     `font-bold cursor-pointer transition pb-1 hover:text-[#21c45a] ${isActive
@@ -37,7 +38,7 @@ const Navbar = () => {
         {/* Desktop Buttons */}
         <div className='hidden md:flex items-center gap-3'>
           <NavBtn />
-          <CartBtn/>
+          <CartBtn  onClick={() => navigate('/cart')}/>
         </div>
 
         {/* Mobile Toggle */}
@@ -69,7 +70,7 @@ const Navbar = () => {
           {/* Mobile Actions */}
           <div className='flex items-center gap-4 pt-4 border-t'>
             <NavBtn />
-            <CartBtn />
+            <CartBtn onClick={() => navigate('/cart')}/>
           </div>
         </div>
       )}
