@@ -4,7 +4,7 @@ import './index.css';
 import { Provider } from "react-redux";
 import App from './App.jsx';
 import "leaflet/dist/leaflet.css";
-import { persistor, store } from './redux/store.jsx';
+import { persistor, store } from './redux/Store.jsx';
 import { PersistGate } from "redux-persist/integration/react";
 
 
