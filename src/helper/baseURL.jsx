@@ -1,3 +1,3 @@
-let baseURL = "http://localhost:5000";
+let baseURL = "https://royalsports-server-abqzqh569-codeaneeqs-projects.vercel.app";
 
 export default baseURL
